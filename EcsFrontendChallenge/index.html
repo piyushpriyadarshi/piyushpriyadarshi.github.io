@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin | Upcharr Software INC</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="data.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/rating.css"
+        integrity="sha256-oWRDXJWeEIbPr9MZxgCi0lssI+Vl+74T72HFgUOnug0=" crossorigin="anonymous" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/rating.js"></script>
+    <style>
+        .btn-block {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body ng-app="bookApp" ng-controller="BookController">
+    <nav>
+        <div class="nav-wrapper indigo">
+            <a href="#" class="brand-logo">Book Search Application</a>
+            <a href="#" class="sidenav-trigger" data-target="slide-out"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">Motivational</a></li>
+                <li><a href="#">SelfHelp</a></li>
+                <li><a href="#">Biography</a></li>
+                <li><a href="#">Cart <i class="material-icons right">shopping_cart</i>{{cartList.length}}</a>
+                </li>
+                <li><a class="dropdown-trigger" href="#!" id="deop" data-target="dropdown1">{{loggedInUser}}<i
+                            class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+        </div>
+    </nav>
+    <ul class="sidenav" id="mobile-trigger">
+        <li><a href="#">Sass</a></li>
+        <li><a href="#">Components</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="images/office.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+                <a href="#name"><span class="white-text name">John Doe</span></a>
+                <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+        <li><a href="#!">Second Link</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">one</a></li>
+        <li><a href="#!">two</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">three</a></li>
+    </ul>
+
+    <div>
+        <!-- Sign Up Card row -->
+        <div class="row">
+            <div class="col s12 m12">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <h3>Search the Book you want to buy</h3>
+                        </span>
+                        <form class="container-fluid">
+                            <div class="row">
+
+                                <div class="input-field col m6">
+                                    <input id="book" type="text" class="validate autocomplete" autocomplete="off">
+                                    <label for=" book">Book</label>
+                                </div>
+                                <div class="input-field col m6">
+                                    <button class="btn waves-effect waves-light indigo lighten-1" type="submit"
+                                        name="action" ng-click="search()">
+                                        Search <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- End of Search Book form -->
+
+        <div class="row">
+            <div class="col s12 m12">
+                <div class="card" ng-if="searchResultList.length!=0">
+                    <div class="card-content">
+                        <div ng-if="searchResultList.length!=0">
+                            <h3>Showing {{searchResultList.length}} Results</h3>
+                            <button ng-click="sortBy('title')" class="btn waves-effect waves-light indigo">Sort By
+                                Title</button>
+                            <button ng-click="sortBy('average_rating')" class="btn waves-effect waves-light indigo">Sort
+                                By
+                                Ratings</button>
+                            <button ng-click="sortBy('price')" class="btn waves-effect waves-light indigo">Sort By
+                                Price</button>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+
+
+
+            <div class="col s12 m12 l4" ng-repeat="book in searchResultList | orderBy : propertyName : reverse">
+                <div class="card sticky-action">
+                    <div class="card-move-up waves-effect waves-block waves-light">
+                        <span class="card-title">{{book.title}}</span>
+
+                    </div>
+                    <div class="card-image">
+                        <img class="activator" src="book.jpeg">
+                        <a class="btn-floating halfway-fab btn-large right activator indigo lighten-1">
+                            <i class="material-icons">add</i>
+                        </a>
+
+                        <!-- {{book.authors}} -->
+
+                    </div>
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s6">
+                                <h4>{{book.price | currency:"₹":0}}</h4>
+
+                            </div>
+                            <div class="col s6">
+
+                                <p>{{book.authors | uppercase }}</p>
+                                <p>{{book.language_code | uppercase }}</p>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-action">
+                        <div class="row">
+                            <div class="col s6">
+                                <a href="#" class="btn waves-effect waves-dark yellow darken-2 btn-block">Buy</a>
+                            </div>
+                            <div class="col s6">
+                                <a href="#" class="btn waves-effect waves-light yellow darken-3 btn-block"
+                                    ng-click="cart($index)">Add To
+                                    cart
+
+                                    <i class="material-icons right">shopping_cart</i></a>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">Details About the Book<i
+                                class="material-icons right">close</i></span>
+
+
+                        <table class="centered highlight">
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Property Value</th>
+                                </tr>
+                            </thead>
+
+
+
+                            <tbody>
+                                <tr>
+                                    <td>Book Name</td>
+                                    <td> {{book.title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Language</td>
+                                    <td> {{book.language_code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Book Authors</td>
+                                    <td> {{book.authors}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Book Ratings</td>
+                                    <td> {{book.average_rating}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Rating Count</td>
+                                    <td> {{book.ratings_count}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+<script>
+    $(document).ready(function () {
+        $(".sidenav").sidenav();
+
+        $('.dropdown-trigger').dropdown();
+        var AllData = getData();
+        localStorage.setItem("data", JSON.stringify(AllData));
+        var autoCompleteData = [];
+        var dataCountry = {};
+        for (var i = 0; i < 5000; i++) {
+            //console.log(countryArray[i].name);
+            dataCountry[AllData[i].title] = null; //countryArray[i].flag or null
+        }
+
+        console.log(dataCountry);
+        // $.ajax({
+        //     headers: 'Access-Control-Allow-Origin',
+        //     dataType: "json",
+        //     type: "GET",
+        //     url: "",
+        //     success: success
+        // });
+        $('input.autocomplete').autocomplete({
+            data: dataCountry,
+        });
+        $('.rating')
+            .rating({
+                initialRating: 3,
+                maxRating: 5
+            });
+
+
+    });
+
+    function success() {
+        console.log(data);
+    }
+</script>
+<script>
+    var app = angular.module("bookApp", []);
+
+    app.controller("BookController", function ($scope, $window) {
+        $scope.propertyName = "title";
+        $scope.reverse = false;
+        console.log($scope.propertyName + "\t" + $scope.reverse);
+        // $scope.data = JSON.parse(localStorage.getItem("data"));
+        $scope.loggedInUser = "Piyush Priyadarshi";
+        $scope.data = JSON.parse(localStorage.getItem('data'));
+        $scope.cartList = [];
+        $scope.NoInCart = $scope.cartList.length;
+        // console.log($scope.data[0])
+        $scope.firstName = "John";
+        $scope.lastName = "Doe";
+        $scope.searchResultList = [];
+        $scope.search = function () {
+            M.toast({
+                html: "Searching......",
+                classes: 'rounded indigo'
+            });
+            $scope.searchResultList = [];
+            $scope.searchData = $('#book').val();
+            for (let i = 0; i < $scope.data.length; i++) {
+                console.log($scope.data[i].title.toString() + "includes" + $scope.searchData.toString());
+                if ($scope.data[i].title.toString().includes($scope.searchData.toString())) {
+                    $scope.searchResultList.push($scope.data[i]);
+                }
+
+            }
+            console.log($scope.searchResultList);
+        }
+        $scope.cart = function (index) {
+            M.toast({
+                html: "One Item Added to Cart",
+                classes: 'rounded indigo'
+            });
+            $scope.cartList.push($scope.searchResultList[index]);
+            console.log($scope.cartList);
+        }
+        $scope.sortBy = function (field) {
+            console.log(field)
+            if (field === 'title') {
+                M.toast({
+                    html: "Sorting Title in Ascending Order",
+                    classes: 'rounded indigo'
+                });
+                $scope.propertyName = "title";
+                $scope.reverse = false;
+            }
+            if (field === 'average_rating') {
+                M.toast({
+                    html: "Sorting Based on Average_Rating in Dscending Order",
+                    classes: 'rounded indigo'
+                });
+                $scope.propertyName = "average_rating";
+                $scope.reverse = true;
+            }
+            if (field === 'price') {
+                M.toast({
+                    html: "Sorting Based on Price in Ascending Order",
+                    classes: 'rounded indigo'
+                });
+                $scope.propertyName = "price";
+                $scope.reverse = false;
+            }
+            console.log($scope.propertyName + "\t" + $scope.reverse);
+        }
+    });
+</script>
+
+</html>
