@@ -1,0 +1,119 @@
+<div class="row">
+  <div class="col s12 m12 l4" ng-repeat="book in gameList ">
+    <div class="card sticky-action">
+      <div class="card-move-up waves-effect waves-block waves-light">
+        <span class="card-title">{{ book.title }}</span>
+      </div>
+      <div class="card-image">
+        <img class="activator" src="game.jpg" />
+        <a
+          class="btn-floating halfway-fab btn-large right activator indigo lighten-1"
+        >
+          <i class="material-icons">add</i>
+        </a>
+
+        <!-- {{book.authors}} -->
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col s6"></div>
+          <div class="col s6">
+            <p>{{ book.authors | uppercase }}</p>
+            <p>{{ book.language_code | uppercase }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            <!-- <ngStar></ngStar>
+            <w3-test-directive title="4"></w3-test-directive> -->
+
+            <span
+              ng-repeat="x in [].constructor(3) track by $index"
+              class="fa fa-star checked"
+            ></span>
+          </div>
+          <div class="col s6">
+            <h6>{{ book.price | currency: "₹":0 }}</h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            <a
+              href="#"
+              class="btn waves-effect waves-dark yellow darken-2 btn-block"
+              >Buy</a
+            >
+          </div>
+          <div class="col s6">
+            <a
+              href="#"
+              class="btn waves-effect waves-light yellow darken-3 btn-block"
+              ng-click="cart($index)"
+              >Add To cart
+
+              <i class="material-icons right">shopping_cart</i></a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- <div class="card-action">
+        <div class="row">
+          <div class="col s6">
+            <a
+              href="#"
+              class="btn waves-effect waves-dark yellow darken-2 btn-block"
+              >Buy</a
+            >
+          </div>
+          <div class="col s6">
+            <a
+              href="#"
+              class="btn waves-effect waves-light yellow darken-3 btn-block"
+              ng-click="cart($index)"
+              >Add To cart
+
+              <i class="material-icons right">shopping_cart</i></a
+            >
+          </div>
+        </div>
+      </div> -->
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4"
+          >Details About the Book<i class="material-icons right">close</i></span
+        >
+
+        <table class="centered highlight">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Property Value</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Book Name</td>
+              <td>{{ book.title }}</td>
+            </tr>
+            <tr>
+              <td>Language</td>
+              <td>{{ book.language_code }}</td>
+            </tr>
+            <tr>
+              <td>Book Authors</td>
+              <td>{{ book.authors }}</td>
+            </tr>
+            <tr>
+              <td>Book Ratings</td>
+              <td>{{ book.average_rating }}</td>
+            </tr>
+            <tr>
+              <td>Rating Count</td>
+              <td>{{ book.ratings_count }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
